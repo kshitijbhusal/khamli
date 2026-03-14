@@ -3,6 +3,9 @@
 // Example: Vercel Cron (vercel.json), or an external service like cron-job.org
 // Protect with CRON_SECRET to prevent abuse.
 
+
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { deleteFile } from "@/lib/s3";
