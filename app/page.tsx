@@ -85,11 +85,11 @@ export default function HomePage() {
       </section>
 
       {/* ── Send + Receive panels ─────────────────────────────────────────── */}
-      <section className="max-w-6xl mx-auto px-6 pb-12">
+      <section className="max-w-6xl mx-auto px-4 pb-12">
         <div className="grid lg:grid-cols-2 gap-8">
 
           {/* Send */}
-          <div className="card-khamli rounded-3xl p-8 flex flex-col gap-6">
+          <div className="card-khamli rounded-3xl p-5 flex flex-col gap-6">
             <div className="flex items-center gap-4">
               <div className="icon-wrap w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -108,7 +108,7 @@ export default function HomePage() {
           </div>
 
           {/* Receive */}
-          <div className="card-khamli rounded-3xl p-8 flex flex-col gap-6">
+          <div className="card-khamli rounded-3xl p-5 flex flex-col gap-6">
             <div className="flex items-center gap-4">
               <div className="icon-wrap w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -171,40 +171,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── How it works ─────────────────────────────────────────────────── */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="section-divider mb-16" />
-        <div className="text-center mb-12">
-          <p className="text-xs uppercase tracking-widest mb-3" style={{ color: "var(--text-faint)" }}>
-            How it works
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>
-            Four steps, ten minutes, gone.
-          </h2>
-        </div>
-
-        <div className="relative grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {steps.map(({ n, title, desc }, i) => (
-            <div key={n} className="step-card rounded-2xl p-7 flex flex-col gap-3 relative">
-              {/* Connector line (hidden on last) */}
-              {i < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-10 left-[calc(100%+10px)] w-[calc(100%-20px)] h-px z-10"
-                  style={{ background: "var(--border-medium)", width: "20px" }} />
-              )}
-              <span className="font-mono text-sm font-medium" style={{ color: "var(--royal)" }}>
-                {n}
-              </span>
-              <h3 className="font-semibold text-base" style={{ color: "var(--text-primary)" }}>
-                {title}
-              </h3>
-              <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                {desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
+  
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <footer className="border-t px-6 py-8" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-6xl mx-auto flex items-center justify-between text-xs"

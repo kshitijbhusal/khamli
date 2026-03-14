@@ -40,8 +40,8 @@ export default function ReceivePanel() {
 
   const handleReceive = async () => {
     const clean = code.trim().toUpperCase();
-    if (clean.length !== 6) {
-      setError("Enter the full 6-character code.");
+    if (clean.length !== 4) {
+      setError("Enter the full 4-character code.");
       return;
     }
 
@@ -85,7 +85,7 @@ export default function ReceivePanel() {
           <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-[#1a56db] animate-pulse-slow" />
-              <span className="text-[var(--text-muted)] text-xs uppercase tracking-wider">
+              <span className="text-[var(--text-muted)] text-md uppercase tracking-wider">
                 {result.type === "text"
                   ? "Message"
                   : result.type === "image"
@@ -95,7 +95,7 @@ export default function ReceivePanel() {
                   : "File"}
               </span>
             </div>
-            <span className="text-[var(--text-faint)] text-xs">
+            <span className="text-[var(--text-faint)] text-xm">
               Expires {new Date(result.expiresAt).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -107,23 +107,23 @@ export default function ReceivePanel() {
           <div className="p-4">
             {result.type === "text" && result.content && (
               <div className="group relative">
-                <p className="text-[var(--text-primary)] text-sm leading-relaxed whitespace-pre-wrap break-words">
+                <p className="text-[var(--text-primary)] text-md leading-relaxed whitespace-pre-wrap break-words">
                   {result.content}
                 </p>
                 <button
                   onClick={() => copyText(result.content!)}
-                  className="mt-3 flex items-center gap-1.5 text-xs text-[var(--text-faint)] hover:text-[var(--text-secondary)] transition-colors"
+                  className="mt-3 flex items-center gap-1.5 text-md text-[var(--text-faint)] hover:text-[var(--text-secondary)] btn-royal-glow rounded-xl p-2 transition-colors"
                 >
                   {copied ? (
                     <>
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <svg width="16" height="16" viewBox="0 0 12 12" fill="none">
                         <path d="M2 6l2.5 2.5 5.5-5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                       Copied
                     </>
                   ) : (
                     <>
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <svg width="16" height="16" viewBox="0 0 12 12" fill="none">
                         <rect x="4" y="4" width="6" height="6" rx="1.2" stroke="currentColor" strokeWidth="1.1"/>
                         <path d="M2 8V2h6" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
@@ -289,7 +289,7 @@ export default function ReceivePanel() {
         <div className="flex justify-end px-4 py-2.5" style={{ borderTop: "1px solid var(--border)" }}>
           <button
             onClick={handleReceive}
-            disabled={state === "loading" || code.length !== 6}
+            disabled={state === "loading" || code.length !== 4}
             className="btn-royal flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-medium text-white"
           >
             {state === "loading" ? (

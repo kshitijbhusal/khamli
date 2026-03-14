@@ -17,17 +17,36 @@ export default function Navbar() {
     <nav className="nav-khamli sticky top-0 z-50 backdrop-blur-md">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group" aria-label="Khamli home">
-          <div className="w-8 h-8 rounded-xl bg-[#1a56db] flex items-center justify-center">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-              className="group-hover:scale-110 transition-transform duration-200">
-              <path d="M2.5 7.5C2.5 4.46 4.96 2 8 2s5.5 2.46 5.5 5.5-2.46 5.5-5.5 5.5"
-                stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              <path d="M8 13C8 13 5 11.2 5 7.5"
-                stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+          <div className="w-10 h-8 rounded-xl  flex items-center justify-center">
+            <svg width="76" height="76" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+
+              {/* <!-- White square background --> */}
+              <rect x="0" y="0" width="64" height="64" rx="12" fill="white" />
+
+              {/* <!-- Envelope border --> */}
+              <rect x="12" y="20" width="40" height="24" rx="3"
+                stroke="black" stroke-width="2" fill="none" />
+
+              {/* <!-- Envelope flap --> */}
+              <path d="M12 22 L32 36 L52 22"
+                stroke="black"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+              {/* <!-- Minimal airmail corner marks --> */}
+              <path d="M16 18 L20 22" stroke="black" stroke-width="2" />
+              <path d="M48 18 L44 22" stroke="black" stroke-width="2" />
+              <path d="M16 46 L20 42" stroke="black" stroke-width="2" />
+              <path d="M48 46 L44 42" stroke="black" stroke-width="2" />
+
             </svg>
           </div>
+
+
           <span className="font-bold tracking-tight text-[15px]" style={{ color: "var(--text-primary)" }}>
-            KHAMLI
+            Ʞhamli
           </span>
         </Link>
 

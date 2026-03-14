@@ -10,7 +10,7 @@ const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1 — easy to read
 export async function generateUniqueCode(): Promise<string> {
   for (let attempt = 0; attempt < 10; attempt++) {
     let code = "";
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 4; i++) {
       code += CHARS[Math.floor(Math.random() * CHARS.length)];
     }
 

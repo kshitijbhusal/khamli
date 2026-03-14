@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     const code = req.nextUrl.searchParams.get("code")?.toUpperCase().trim();
 
-    if (!code || code.length !== 6) {
+    if (!code || code.length !== 4) {
       return NextResponse.json({ error: "Invalid code" }, { status: 400 });
     }
 

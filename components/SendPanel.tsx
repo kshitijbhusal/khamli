@@ -287,7 +287,7 @@ export default function SendPanel() {
           }
           disabled={isBusy}
           rows={4}
-          className="w-full bg-transparent text-sm placeholder-zinc-500/60 resize-none px-4 py-4 focus:outline-none leading-relaxed disabled:opacity-50" style={{ color: "var(--text-primary)" }}
+          className="w-full bg-transparent text-md placeholder-zinc-500/60 resize-none px-4 py-4 focus:outline-none leading-relaxed disabled:opacity-50" style={{ color: "var(--text-primary)" }}
         />
 
         {/* Toolbar */}
