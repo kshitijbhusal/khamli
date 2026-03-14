@@ -1,0 +1,38 @@
+// app/layout.tsx
+import type { Metadata } from "next";
+// import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/Navbar";
+import { ThemeProvider } from "@/components/ThemeProvider";
+
+// const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+// const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Khamli — Share Anything, No Signup",
+  description: "Send files, links, and messages using a 6-character code. No account, no login, no trace. Everything wipes in 10 minutes.",
+  openGraph: {
+    title: "Khamli — Share Anything, No Signup",
+    description: "Share anonymously. Self-destructs in 10 minutes.",
+    url: "https://khamli.com",
+    siteName: "Khamli",
+    type: "website",
+  },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className="scroll-smooth">
+      <body
+        // className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        className={`antialiased min-h-screen`}
+        style={{ background: "var(--bg)", color: "var(--text-primary)" }}
+      >
+        <ThemeProvider>
+          <Navbar />
+          <main>{children}</main>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}

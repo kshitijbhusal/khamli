@@ -1,0 +1,178 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme variables ─────────────────────────────────────────────────────── */
+:root {
+  --royal: #1a56db;
+  --royal-dark: #1244c0;
+  --royal-light: #2563eb;
+  --royal-glow: rgba(26, 86, 219, 0.18);
+
+  /* Dark theme (default) */
+  --bg:          #000000;
+  --bg-2:        #0d0d0d;
+  --surface:     #111111;
+  --surface-2:   #181818;
+  --surface-3:   #222222;
+
+  --text-primary:    #ffffff;
+  --text-secondary:  rgba(200, 192, 192, 0.6);
+  --text-muted:      rgba(191, 182, 182, 0.792);
+  --text-faint:      rgba(187, 183, 183, 0.794);
+
+  --border:        rgba(255,255,255,0.07);
+  --border-soft:   rgba(255,255,255,0.04);
+  --border-medium: rgba(255,255,255,0.11);
+
+  --card-bg:     #0f0f0f;
+  --card-border: rgba(255,255,255,0.07);
+
+  --input-bg:     #141414;
+  --input-border: rgba(255,255,255,0.08);
+
+  --step-bg:     rgba(255,255,255,0.03);
+  --step-border: rgba(255,255,255,0.05);
+
+  --nav-bg:     rgba(0,0,0,0.8);
+  --nav-border: rgba(255,255,255,0.06);
+
+  --divider: linear-gradient(90deg, transparent, rgba(255,255,255,0.05) 30%, rgba(26,86,219,0.2) 50%, rgba(255,255,255,0.05) 70%, transparent);
+
+  --scrollbar-track: #0d0d0d;
+  --scrollbar-thumb: #2a2a2a;
+
+  --badge-bg:     rgba(26,86,219,0.12);
+  --badge-border: rgba(26,86,219,0.28);
+  --badge-text:   #6e96f7;
+
+  --result-bg:     #0a1535;
+  --result-border: rgba(26,86,219,0.35);
+  --support-bg:    #0a1535;
+
+  --icon-bg:     rgba(26,86,219,0.14);
+  --icon-border: rgba(26,86,219,0.24);
+
+  --feature-bg:     rgba(255,255,255,0.02);
+  --feature-border: rgba(255,255,255,0.05);
+}
+
+html.light {
+  --bg:          #F9F8F6;
+  --bg-2:        #EFE9E3;
+  --surface:     #ffffff;
+  --surface-2:   #f7f8fb;
+  --surface-3:   #eef0f5;
+
+  --text-primary:    #080c14;
+  --text-secondary:  rgba(0, 0, 0, 0.58);
+  --text-muted:      rgb(88, 82, 82);
+  --text-faint:      rgba(0, 0, 0, 0.8);
+
+  --border:        rgba(0, 0, 0, 0.07);
+  --border-soft:   rgba(0,0,0,0.04);
+  --border-medium: rgba(0,0,0,0.1);
+
+  --card-bg:     #F3F4F4;
+  --card-border: rgba(0,0,0,0.07);
+
+  --input-bg:     #f7f8fb;
+  --input-border: rgba(0,0,0,0.09);
+
+  --step-bg:     rgba(0,0,0,0.025);
+  --step-border: rgba(0,0,0,0.05);
+
+  --nav-bg:     rgba(242,244,248,0.88);
+  --nav-border: rgba(0,0,0,0.07);
+
+  --divider: linear-gradient(90deg, transparent, rgba(0,0,0,0.05) 30%, rgba(26,86,219,0.15) 50%, rgba(0,0,0,0.05) 70%, transparent);
+
+  --scrollbar-track: #e8ebf2;
+  --scrollbar-thumb: #c4c8d4;
+
+  --badge-bg:     rgba(26,86,219,0.08);
+  --badge-border: rgba(26,86,219,0.2);
+  --badge-text:   #1a56db;
+
+  --result-bg:     #eef3fd;
+  --result-border: rgba(26,86,219,0.25);
+  --support-bg:    #eef3fd;
+
+  --icon-bg:     rgba(26,86,219,0.09);
+  --icon-border: rgba(26,86,219,0.18);
+
+  --feature-bg:     rgba(0,0,0,0.02);
+  --feature-border: rgba(0,0,0,0.05);
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { background: var(--bg); color: var(--text-primary); }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--royal); }
+
+::selection { background: rgba(26,86,219,0.22); }
+
+:focus-visible {
+  outline: 2px solid var(--royal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ── Utilities ───────────────────────────────────────────────────────────── */
+.glow-royal    { box-shadow: 0 0 0 1px rgba(26,86,219,0.35), 0 0 24px rgba(26,86,219,0.13); }
+.glow-royal-sm { box-shadow: 0 0 0 1px rgba(26,86,219,0.28), 0 0 14px rgba(26,86,219,0.09); }
+
+.code-display { font-family: var(--font-geist-mono); letter-spacing: 0.2em; }
+
+/* ── Components ──────────────────────────────────────────────────────────── */
+.input-khamli {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-khamli:focus-within {
+  border-color: rgba(26,86,219,0.45);
+  box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+}
+
+.drop-zone { border: 1.5px dashed var(--border-medium); transition: border-color 0.2s, background 0.2s; }
+.drop-zone.active, .drop-zone:hover { border-color: rgba(26,86,219,0.45); background: rgba(26,86,219,0.04); }
+
+.btn-royal { background: var(--royal); transition: background 0.15s, box-shadow 0.15s, transform 0.1s; }
+.btn-royal:hover:not(:disabled) { background: var(--royal-dark); box-shadow: 0 4px 22px rgba(26,86,219,0.3); transform: translateY(-1px); }
+.btn-royal:active:not(:disabled) { transform: translateY(0); }
+.btn-royal:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.card-khamli    { background: var(--card-bg); border: 1px solid var(--card-border); }
+.nav-khamli     { background: var(--nav-bg); border-bottom: 1px solid var(--nav-border); }
+.badge-khamli   { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--badge-text); }
+.step-card      { background: var(--step-bg); border: 1px solid var(--step-border); }
+.result-card    { background: var(--result-bg); border: 1px solid var(--result-border); }
+.support-card   { background: var(--support-bg); border: 1px solid var(--result-border); }
+.icon-wrap      { background: var(--icon-bg); border: 1px solid var(--icon-border); }
+.feature-card   { background: var(--feature-bg); border: 1px solid var(--feature-border); }
+.section-divider { height: 1px; background: var(--divider); }
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes fadeIn  { from{opacity:0}to{opacity:1} }
+@keyframes slideUp { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
+@keyframes pulseGlow {
+  0%,100%{ box-shadow: 0 0 0 1px rgba(26,86,219,0.35), 0 0 20px rgba(26,86,219,0.1); }
+  50%    { box-shadow: 0 0 0 1px rgba(26,86,219,0.5),  0 0 32px rgba(26,86,219,0.2); }
+}
+.animate-fade-in  { animation: fadeIn  0.4s ease forwards; }
+.animate-slide-up { animation: slideUp 0.35s ease forwards; }
+.animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+.toast { animation: slideUp 0.3s ease forwards; }
+
+/* ── Theme transition (smooth but no jank on fast interactions) ──────────── */
+html, body, .card-khamli, .nav-khamli, .input-khamli, .step-card, .result-card, .support-card, .icon-wrap, .badge-khamli, .feature-card {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
