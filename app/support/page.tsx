@@ -2,7 +2,7 @@
 "use client";
 import { useState } from "react";
 
-const SOLANA_ADDRESS = "YOUR_SOLANA_USDT_ADDRESS_HERE";
+const SOLANA_ADDRESS = "CULHUoFYC7FXcD6x1i2UvfFaCha64F1t3iuyo9ijVpr";
 
 const tiers = [
   { label: "Coffee", amount: "$1", emoji: "☕", desc: "Keeps the server warm" },

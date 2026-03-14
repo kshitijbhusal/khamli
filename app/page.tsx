@@ -56,7 +56,7 @@ export default function HomePage() {
     <div className="min-h-[calc(100vh-64px)]">
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative pt-16 pb-8 px-6 text-center overflow-hidden">
+      <section className="relative pt-12 pb-8 px-6 text-center overflow-hidden">
         {/* Ambient glow */}
         <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="w-[700px] h-[400px] rounded-full blur-[140px]"
@@ -64,12 +64,21 @@ export default function HomePage() {
         </div>
 
         {/* Badge */}
-        <div className="badge-khamli inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium mb-4">
+        <div className=" hidden badge-khamli lg:inline-flex  items-center gap-2 rounded-full px-4 py-2 text-xs font-medium mb-4">
           <span className="w-1.5 h-1.5 rounded-full bg-[#1a56db]/50 animate-pulse" />
-          <p className="text-md  uppercase font-extrabold " >No login · No signup · Self-destructs in 10 min</p>
+          <p 
+          style={{ color: "var(--text-secondary)" }}
+          className="text-md  uppercase font-bold " >No login · No signup · Self-destructs in 10 min</p>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl lg:text-6xl font-bold tracking-tight leading-[1.06] mb-6"
+        <div className=" lg:hidden  badge-khamli sm:inline-flex items-center gap-2 rounded-full px-1 py-2  mb-8">
+          <span className="w-1.5 h-1 rounded-full bg-[#1a56db]/50 animate-pulse" />
+          <p 
+          style={{ color: "var(--text-secondary)" }}
+          className="text-xs  uppercase font-thin " >No login · No signup · Self-destructs in 10 min</p>
+        </div>
+
+        <h1 className="text-4xl sm:text-6xl lg:text-6xl font-bold tracking-tight leading-[1.06] mb-6"
           style={{ color: "var(--text-primary)" }}>
           Share anything,
           <br />
@@ -134,7 +143,7 @@ export default function HomePage() {
 
         <p className="max-w-xl mx-auto text-lg leading-relaxed mb-4"
           style={{ color: "var(--text-secondary)" }}>
-          Drop a message, link, image, PDF, or file. Get a 6-character code.
+          Drop a message, link, image, PDF, or file. Get a 4-character code.
           Share the code. Everything vanishes in 10 minutes — no trace, no account.
         </p>
 
@@ -145,14 +154,14 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-6 pb-20">
         <div className="section-divider mb-16" />
         <div className="text-center mb-12">
-          <p className="text-xs uppercase tracking-widest mb-3" style={{ color: "var(--text-faint)" }}>
+          {/* <p className="text-xs uppercase tracking-widest mb-3" style={{ color: "var(--text-faint)" }}>
             Why Khamli
-          </p>
+          </p> */}
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>
             Built for privacy-first sharing
           </h2>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {features.map(({ icon, title, desc }) => (
             <div key={title} className="feature-card rounded-2xl p-6 flex flex-col gap-4">
               <div className="icon-wrap w-10 h-10 rounded-xl flex items-center justify-center">
@@ -168,7 +177,7 @@ export default function HomePage() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </section>
 
   

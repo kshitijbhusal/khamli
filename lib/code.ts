@@ -1,7 +1,7 @@
 // lib/code.ts
 import { prisma } from "./prisma";
 
-const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1 — easy to read aloud
+const CHARS = "123456789ABCDEFGHIJKLMNOPQRST"; // no I/O/0/1 — easy to read aloud
 
 /**
  * Generates a unique 6-char alphanumeric code.
