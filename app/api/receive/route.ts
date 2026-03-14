@@ -1,4 +1,7 @@
+export const dynamic = "force-dynamic";
+
 // app/api/receive/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getDownloadUrl } from "@/lib/s3";
