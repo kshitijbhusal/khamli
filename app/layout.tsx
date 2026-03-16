@@ -5,12 +5,18 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
+
 // const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 // const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Khamli — Share Anything, No Signup",
-  description: "Send files, links, and messages using a 6-character code. No account, no login, no trace. Everything wipes in 10 minutes.",
+  description: "Send files, links, and messages using a 4-character code. No account, no login, no trace. Everything wipes in 10 minutes.",
+  // Add this section:
+  icons: {
+    icon: "/image.png",
+    apple: "/image.png", // Recommended for iOS home screen icons
+  },
   openGraph: {
     title: "Khamli — Share Anything, No Signup",
     description: "Share anonymously. Self-destructs in 10 minutes.",

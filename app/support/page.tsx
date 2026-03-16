@@ -81,7 +81,7 @@ export default function SupportPage() {
         </div>
 
         {/* Suggested tiers */}
-        <div className="text-center mb-8">
+        {/* <div className="text-center mb-8">
           <p className="text-xs uppercase tracking-widest mb-3" style={{ color: "var(--text-faint)" }}>
             Any amount helps
           </p>
@@ -100,7 +100,7 @@ export default function SupportPage() {
               <p className="text-xs" style={{ color: "var(--text-muted)" }}>{desc}</p>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Solana donation card */}
         <div className="support-card rounded-3xl p-8 glow-royal-sm">
