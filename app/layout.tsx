@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="scroll-smooth">
 
       <head>
-
+        <meta name="google-adsense-account" content="ca-pub-5837969877814739"></meta>
 
       </head>
 
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <ThemeProvider>
           <Navbar />
-          <AdBanner/>
+          <AdBanner />
           <main>{children}</main>
         </ThemeProvider>
       </body>
