@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import AdSense from "@/components/AdSense";
 
 
 // const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -29,6 +30,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
+
+      <head>
+        <AdSense pId="ca-pub-5837969877814739" />
+
+      </head>
+
+
       <body
         // className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
         className={`antialiased min-h-screen`}

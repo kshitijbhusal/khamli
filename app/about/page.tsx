@@ -129,7 +129,7 @@ export default function AboutPage() {
               How your data is handled
             </h2>
             <div className="space-y-4">
-              {dataPoints.map(({ label, desc }) => (
+              {dataPoints.map(({ label, desc}) => (
                 <div key={label} className="feature-card rounded-2xl p-6">
                   <p className="font-semibold text-sm mb-2" style={{ color: "var(--text-primary)" }}>
                     {label}
