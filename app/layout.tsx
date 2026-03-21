@@ -4,7 +4,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import AdSense from "@/components/AdSense";
+
+import Script from 'next/script';
+import AdBanner from "@/components/AdBanner";
 
 
 // const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -32,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="scroll-smooth">
 
       <head>
-        <AdSense pId="ca-pub-5837969877814739" />
+
 
       </head>
 
@@ -42,8 +44,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`antialiased min-h-screen`}
         style={{ background: "var(--bg)", color: "var(--text-primary)" }}
       >
+
+
+        {/* Adsense Script */}
+        <Script
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5837969877814739"
+          crossOrigin="anonymous"
+        />
+
         <ThemeProvider>
           <Navbar />
+          <AdBanner/>
           <main>{children}</main>
         </ThemeProvider>
       </body>
