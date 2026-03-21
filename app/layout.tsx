@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 import Script from 'next/script';
-import AdBanner from "@/components/AdBanner";
+import { Analytics } from '@vercel/analytics/next';
 
 
 // const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -56,9 +56,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <ThemeProvider>
           <Navbar />
-          <AdBanner />
+        
           <main>{children}</main>
         </ThemeProvider>
+
+        <Analytics />
       </body>
     </html>
   );

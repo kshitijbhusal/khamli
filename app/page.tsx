@@ -1,6 +1,7 @@
 // app/page.tsx
 import SendPanel from "@/components/SendPanel";
 import ReceivePanel from "@/components/ReceivePanel";
+import AdBanner from "@/components/AdBanner";
 
 const features = [
   {
@@ -54,6 +55,7 @@ const steps = [
 export default function HomePage() {
   return (
     <div className="min-h-[calc(100vh-64px)]">
+        <AdBanner />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="relative pt-12 pb-8 px-6 text-center overflow-hidden">
