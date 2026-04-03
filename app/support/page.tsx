@@ -1,5 +1,6 @@
 // app/support/page.tsx
 "use client";
+import AdBanner from "@/components/AdBanner";
 import { useState } from "react";
 
 const SOLANA_ADDRESS = "CULHUoFYC7FXcD6x1i2UvfFaCha64F1t3iuyo9ijVpr";
@@ -27,6 +28,8 @@ export default function SupportPage() {
 
   return (
     <div className="min-h-[calc(100vh-64px)]">
+
+      <AdBanner/>
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="relative pt-24 pb-16 px-6 text-center overflow-hidden">

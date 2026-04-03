@@ -1,4 +1,5 @@
 // app/about/page.tsx
+import AdBanner from "@/components/AdBanner";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -39,6 +40,8 @@ const shareTypes = [
 export default function AboutPage() {
   return (
     <div className="min-h-[calc(100vh-64px)]">
+
+      <AdBanner/>
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="relative pt-24 pb-16 px-6 overflow-hidden">
