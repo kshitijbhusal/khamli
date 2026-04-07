@@ -5,14 +5,28 @@ import { useState, useRef } from "react";
 
 type ReceiveState = "idle" | "loading" | "done" | "error";
 
+// A single file within a multi-file result
+interface FileEntry {
+  fileName: string;
+  fileMime: string;
+  fileSize: number;
+  viewUrl: string | null;
+  downloadUrl: string;
+}
+
 interface MessageResult {
-  type: "text" | "image" | "pdf" | "file";
+  type: "text" | "image" | "pdf" | "file" | "files";
+  // text
   content?: string;
+  // legacy single-file
   fileName?: string;
   fileMime?: string;
   fileSize?: number;
   viewUrl?: string;
   downloadUrl?: string;
+  // multi-file batch
+  files?: FileEntry[];
+  caption?: string | null;
   expiresAt: string;
 }
 
@@ -24,10 +38,86 @@ function formatBytes(bytes: number): string {
 
 function fileIcon(mime?: string) {
   if (!mime) return "📎";
+  if (mime.startsWith("image/")) return "🖼️";
+  if (mime === "application/pdf") return "📄";
   if (mime.startsWith("video/")) return "🎬";
   if (mime.startsWith("audio/")) return "🎵";
   if (mime.includes("zip") || mime.includes("rar") || mime.includes("tar")) return "🗜️";
-  return "📄";
+  return "📎";
+}
+
+function typeLabel(type: MessageResult["type"]) {
+  if (type === "text") return "Message";
+  if (type === "image") return "Image";
+  if (type === "pdf") return "PDF";
+  if (type === "files") return "Files";
+  return "File";
+}
+
+// ── Reusable download row for a single file ────────────────────────────────
+function FileRow({ file }: { file: FileEntry }) {
+  const isImage = file.fileMime.startsWith("image/");
+  const isPdf = file.fileMime === "application/pdf";
+  const isViewable = isImage || isPdf;
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden"
+      style={{ background: "var(--step-bg)", border: "1px solid var(--border)" }}
+    >
+      {/* Image preview */}
+      {isImage && file.viewUrl && (
+        <img
+          src={file.viewUrl}
+          alt={file.fileName}
+          className="w-full max-h-48 object-contain bg-white/[0.03]"
+        />
+      )}
+
+      <div className="flex items-center gap-3 px-3 py-2.5">
+        <div className="w-9 h-9 rounded-lg flex items-center justify-center text-base flex-shrink-0"
+          style={{ background: "var(--border)", border: "1px solid var(--border-medium)" }}>
+          {fileIcon(file.fileMime)}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm truncate font-medium" style={{ color: "var(--text-primary)" }}>
+            {file.fileName}
+          </p>
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+            {formatBytes(file.fileSize)}
+          </p>
+        </div>
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          {isViewable && file.viewUrl && (
+            <a
+              href={file.viewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs transition-colors"
+              style={{ color: "var(--text-secondary)", border: "1px solid var(--border-medium)" }}
+            >
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2"/>
+                <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
+              </svg>
+              View
+            </a>
+          )}
+          <a
+            href={file.downloadUrl}
+            download={file.fileName}
+            className="btn-royal flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs text-white font-medium"
+          >
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+              <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
+            </svg>
+            Download
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function ReceivePanel() {
@@ -75,36 +165,48 @@ export default function ReceivePanel() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // ── Download all files at once ─────────────────────────────────────────────
+  const downloadAll = (files: FileEntry[]) => {
+    files.forEach((f, i) => {
+      // Stagger clicks slightly so browser doesn't block them
+      setTimeout(() => {
+        const a = document.createElement("a");
+        a.href = f.downloadUrl;
+        a.download = f.fileName;
+        a.click();
+      }, i * 300);
+    });
+  };
+
   // ── Result display ─────────────────────────────────────────────────────────
   if (state === "done" && result) {
     return (
       <div className="animate-slide-up space-y-4">
-        {/* Message card */}
         <div className="card-khamli rounded-2xl overflow-hidden">
+
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-[#1a56db] animate-pulse-slow" />
               <span className="text-[var(--text-muted)] text-md uppercase tracking-wider">
-                {result.type === "text"
-                  ? "Message"
-                  : result.type === "image"
-                  ? "Image"
-                  : result.type === "pdf"
-                  ? "PDF"
-                  : "File"}
+                {typeLabel(result.type)}
+                {result.type === "files" && result.files && (
+                  <span className="ml-1.5 px-1.5 py-0.5 rounded-md text-xs normal-case tracking-normal"
+                    style={{ background: "var(--step-bg)", color: "var(--text-faint)", border: "1px solid var(--border)" }}>
+                    {result.files.length}
+                  </span>
+                )}
               </span>
             </div>
-            <span className="text-[var(--text-faint)] text-xm">
-              Expires {new Date(result.expiresAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
+            <span className="text-[var(--text-faint)] text-xs">
+              Expires {new Date(result.expiresAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
             </span>
           </div>
 
           {/* Content */}
           <div className="p-4">
+
+            {/* ── Text ──────────────────────────────────────────────────────── */}
             {result.type === "text" && result.content && (
               <div className="group relative">
                 <p className="text-[var(--text-primary)] text-md leading-relaxed whitespace-pre-wrap break-words">
@@ -134,6 +236,39 @@ export default function ReceivePanel() {
               </div>
             )}
 
+            {/* ── Multi-file batch ───────────────────────────────────────────── */}
+            {result.type === "files" && result.files && (
+              <div className="space-y-2">
+                {/* Optional caption */}
+                {result.caption && (
+                  <p className="text-sm mb-3 pb-3 leading-relaxed"
+                    style={{ color: "var(--text-secondary)", borderBottom: "1px solid var(--border)" }}>
+                    {result.caption}
+                  </p>
+                )}
+
+                {/* File rows */}
+                {result.files.map((file, i) => (
+                  <FileRow key={i} file={file} />
+                ))}
+
+                {/* Download all button (only if more than 1 file) */}
+                {result.files.length > 1 && (
+                  <button
+                    onClick={() => downloadAll(result.files!)}
+                    className="btn-royal w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm text-white font-medium mt-3"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M7 2v8M4 8l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M2 12h10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+                    </svg>
+                    Download all {result.files.length} files
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* ── Legacy single image ────────────────────────────────────────── */}
             {result.type === "image" && result.viewUrl && (
               <div className="space-y-3">
                 <img
@@ -142,23 +277,16 @@ export default function ReceivePanel() {
                   className="w-full max-h-72 object-contain rounded-xl border border-white/10 bg-white/[0.03]"
                 />
                 <div className="flex gap-2">
-                  <a
-                    href={result.viewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-[var(--text-secondary)] border border-white/10 hover:border-white/20 hover:text-white transition-colors"
-                  >
+                  <a href={result.viewUrl} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-[var(--text-secondary)] border border-white/10 hover:border-white/20 hover:text-white transition-colors">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                       <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2"/>
                       <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
                     </svg>
                     View
                   </a>
-                  <a
-                    href={result.downloadUrl}
-                    download={result.fileName}
-                    className="btn-royal flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white font-medium"
-                  >
+                  <a href={result.downloadUrl} download={result.fileName}
+                    className="btn-royal flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white font-medium">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                       <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
@@ -169,37 +297,27 @@ export default function ReceivePanel() {
               </div>
             )}
 
+            {/* ── Legacy single PDF ──────────────────────────────────────────── */}
             {result.type === "pdf" && result.viewUrl && (
               <div className="space-y-3">
                 <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: "var(--step-bg)", border: "1px solid var(--border)" }}>
-                  <div className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-base">
-                    📄
-                  </div>
+                  <div className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-base">📄</div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm truncate" style={{ color: "var(--text-primary)" }}>{result.fileName}</p>
-                    <p className="text-xs text-[var(--text-muted)]">
-                      PDF · {result.fileSize ? formatBytes(result.fileSize) : ""}
-                    </p>
+                    <p className="text-xs text-[var(--text-muted)]">PDF · {result.fileSize ? formatBytes(result.fileSize) : ""}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <a
-                    href={result.viewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-[var(--text-secondary)] border border-white/10 hover:border-white/20 hover:text-white transition-colors"
-                  >
+                  <a href={result.viewUrl} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-[var(--text-secondary)] border border-white/10 hover:border-white/20 hover:text-white transition-colors">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                       <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2"/>
                       <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
                     </svg>
                     View PDF
                   </a>
-                  <a
-                    href={result.downloadUrl}
-                    download={result.fileName}
-                    className="btn-royal flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white font-medium"
-                  >
+                  <a href={result.downloadUrl} download={result.fileName}
+                    className="btn-royal flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white font-medium">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                       <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
@@ -210,6 +328,7 @@ export default function ReceivePanel() {
               </div>
             )}
 
+            {/* ── Legacy single generic file ─────────────────────────────────── */}
             {result.type === "file" && result.downloadUrl && (
               <div className="space-y-3">
                 <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: "var(--step-bg)", border: "1px solid var(--border)" }}>
@@ -218,16 +337,11 @@ export default function ReceivePanel() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm truncate" style={{ color: "var(--text-primary)" }}>{result.fileName}</p>
-                    <p className="text-xs text-[var(--text-muted)]">
-                      {result.fileSize ? formatBytes(result.fileSize) : "File"}
-                    </p>
+                    <p className="text-xs text-[var(--text-muted)]">{result.fileSize ? formatBytes(result.fileSize) : "File"}</p>
                   </div>
                 </div>
-                <a
-                  href={result.downloadUrl}
-                  download={result.fileName}
-                  className="btn-royal inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm text-white font-medium"
-                >
+                <a href={result.downloadUrl} download={result.fileName}
+                  className="btn-royal inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm text-white font-medium">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                     <path d="M7 2v8M4 8l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M2 12h10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
@@ -249,7 +363,7 @@ export default function ReceivePanel() {
     );
   }
 
-  // ── Input state ─────────────────────────────────────────────────────────────
+  // ── Input state ────────────────────────────────────────────────────────────
   return (
     <div className="space-y-3 animate-fade-in">
       <div className="input-khamli rounded-2xl overflow-hidden">
@@ -261,7 +375,7 @@ export default function ReceivePanel() {
             ref={inputRef}
             value={code}
             onChange={(e) => {
-              setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6));
+              setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4));
               setError("");
             }}
             onKeyDown={(e) => e.key === "Enter" && handleReceive()}
@@ -270,7 +384,7 @@ export default function ReceivePanel() {
             spellCheck={false}
             autoCapitalize="characters"
             disabled={state === "loading"}
-            className="code-display w-full bg-transparent text-2xl tracking-[0.25em] placeholder-zinc-400/60 /15 bg-red-0 focus:outline-none disabled:opacity-50"
+            className="code-display w-full bg-transparent text-2xl tracking-[0.25em] placeholder-zinc-400/60 focus:outline-none disabled:opacity-50"
             style={{ color: "var(--text-primary)", fontFamily: "var(--font-geist-mono)" }}
           />
           {/* Code fill dots */}

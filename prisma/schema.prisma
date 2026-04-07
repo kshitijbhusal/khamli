@@ -24,6 +24,7 @@ model Message {
   fileName  String?  // original file name
   fileMime  String?  // MIME type
   fileSize  Int?     // bytes
+  filesMeta String?  // JSON array of {fileKey,fileName,fileMime,fileSize} for multi-file
   expiresAt DateTime
   createdAt DateTime @default(now())
 
