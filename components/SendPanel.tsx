@@ -48,9 +48,9 @@ export default function SendPanel() {
     }
 
     const toAdd = files.slice(0, remaining);
-    const oversized = toAdd.find((f) => f.size > 50 * 1024 * 1024);
+    const oversized = toAdd.find((f) => f.size > 500 * 1024 * 1024);
     if (oversized) {
-      setError(`"${oversized.name}" exceeds the 50 MB limit.`);
+      setError(`"${oversized.name}" exceeds the 500 MB limit.`);
       return;
     }
 
