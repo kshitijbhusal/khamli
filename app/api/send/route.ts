@@ -7,7 +7,7 @@ import { generateUniqueCode, getExpiryTime } from "@/lib/code";
 import { getUploadUrl } from "@/lib/s3";
 import { v4 as uuidv4 } from "uuid";
 
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500 MB
 const MAX_FILES = 10;
 
 export async function POST(req: NextRequest) {
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         }
         if (f.fileSize > MAX_FILE_SIZE) {
           return NextResponse.json(
-            { error: `"${f.fileName}" exceeds the 50 MB limit` },
+            { error: `"${f.fileName}" exceeds the 500 MB limit` },
             { status: 400 }
           );
         }
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Missing file metadata" }, { status: 400 });
       }
       if (fileSize > MAX_FILE_SIZE) {
-        return NextResponse.json({ error: "File too large (max 50 MB)" }, { status: 400 });
+        return NextResponse.json({ error: "File too large (max 500 MB)" }, { status: 400 });
       }
 
       const code = await generateUniqueCode();
