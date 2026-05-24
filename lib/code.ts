@@ -1,7 +1,7 @@
 // lib/code.ts
 import { prisma } from "./prisma";
 
-const CHARS = "123456789ABCDEFGHIJKLMNOPQRST"; // no I/O/0/1 — easy to read aloud
+const CHARS = "23456789ABCDEFGHJKLMNPQRST"; // no I/O/0/1 — easy to read aloud
 
 /**
  * Generates a unique 6-char alphanumeric code.
@@ -23,6 +23,6 @@ export async function generateUniqueCode(): Promise<string> {
 /**
  * Returns the expiry time 10 minutes from now.
  */
-export function getExpiryTime(): Date {
-  return new Date(Date.now() + 10 * 60 * 1000);
+export function getExpiryTime(hour: number): Date {
+  return new Date(Date.now() + hour * 60 * 60 * 1000);
 }

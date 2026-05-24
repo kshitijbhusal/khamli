@@ -97,8 +97,8 @@ function FileRow({ file }: { file: FileEntry }) {
               style={{ color: "var(--text-secondary)", border: "1px solid var(--border-medium)" }}
             >
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2"/>
-                <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2" />
+                <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2" />
               </svg>
               View
             </a>
@@ -109,8 +109,8 @@ function FileRow({ file }: { file: FileEntry }) {
             className="btn-royal flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs text-white font-medium"
           >
             <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-              <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
+              <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
             </svg>
             Download
           </a>
@@ -209,9 +209,54 @@ export default function ReceivePanel() {
             {/* ── Text ──────────────────────────────────────────────────────── */}
             {result.type === "text" && result.content && (
               <div className="group relative">
+                {/* <p className="text-[var(--text-primary)] text-md leading-relaxed whitespace-pre-wrap break-words">
+              
+                  {result.content.split(/\s+/).map((word, i) => {
+                    const urlPattern = /^(https?:\/\/[^\s]+)/;
+                    const match = word.match(urlPattern);
+                    if (match) {
+                      return (
+                        <a
+                          key={i}
+                          href={match[0]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[var(--text-secondary)] underline hover:text-[var(--text-primary)] transition-colors break-all"
+                        >
+                          {match[0]}
+                        </a>
+                        
+                      );
+                    }
+                    return word + " ";
+                  })}
+                
+                </p> */}
+
                 <p className="text-[var(--text-primary)] text-md leading-relaxed whitespace-pre-wrap break-words">
-                  {result.content}
+                  {result.content.split(/(\s+)/).map((part, i) => {
+                    const urlPattern = /^(https?:\/\/[^\s]+)/;
+                    const match = part.match(urlPattern);
+
+                    if (match) {
+                      return (
+                        <a
+                          key={i}
+                          href={match[0]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[var(--text-secondary)] underline hover:text-[var(--text-primary)] transition-colors break-all"
+                        >
+                          {match[0]}
+                        </a>
+                      );
+                    }
+
+                    return part; // <-- keep spaces exactly as they are
+                  })}
                 </p>
+
+
                 <button
                   onClick={() => copyText(result.content!)}
                   className="mt-3 flex items-center gap-1.5 text-md text-[var(--text-faint)] hover:text-[var(--text-secondary)] btn-royal-glow rounded-xl p-2 transition-colors"
@@ -219,15 +264,15 @@ export default function ReceivePanel() {
                   {copied ? (
                     <>
                       <svg width="16" height="16" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6l2.5 2.5 5.5-5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M2 6l2.5 2.5 5.5-5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       Copied
                     </>
                   ) : (
                     <>
                       <svg width="16" height="16" viewBox="0 0 12 12" fill="none">
-                        <rect x="4" y="4" width="6" height="6" rx="1.2" stroke="currentColor" strokeWidth="1.1"/>
-                        <path d="M2 8V2h6" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                        <rect x="4" y="4" width="6" height="6" rx="1.2" stroke="currentColor" strokeWidth="1.1" />
+                        <path d="M2 8V2h6" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       Copy
                     </>
@@ -259,8 +304,8 @@ export default function ReceivePanel() {
                     className="btn-royal w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm text-white font-medium mt-3"
                   >
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M7 2v8M4 8l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M2 12h10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+                      <path d="M7 2v8M4 8l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M2 12h10" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
                     </svg>
                     Download all {result.files.length} files
                   </button>
@@ -280,16 +325,16 @@ export default function ReceivePanel() {
                   <a href={result.viewUrl} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-[var(--text-secondary)] border border-white/10 hover:border-white/20 hover:text-white transition-colors">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2"/>
-                      <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                      <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2" />
+                      <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2" />
                     </svg>
                     View
                   </a>
                   <a href={result.downloadUrl} download={result.fileName}
                     className="btn-royal flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white font-medium">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
+                      <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
                     </svg>
                     Download
                   </a>
@@ -311,16 +356,16 @@ export default function ReceivePanel() {
                   <a href={result.viewUrl} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-[var(--text-secondary)] border border-white/10 hover:border-white/20 hover:text-white transition-colors">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2"/>
-                      <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                      <path d="M1 6s2-4 5-4 5 4 5 4-2 4-5 4-5-4-5-4z" stroke="currentColor" strokeWidth="1.2" />
+                      <circle cx="6" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.2" />
                     </svg>
                     View PDF
                   </a>
                   <a href={result.downloadUrl} download={result.fileName}
                     className="btn-royal flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white font-medium">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
+                      <path d="M6 2v6M3.5 6l2.5 2.5L8.5 6" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M1.5 10h9" stroke="white" strokeWidth="1.3" strokeLinecap="round" />
                     </svg>
                     Download
                   </a>
@@ -343,8 +388,8 @@ export default function ReceivePanel() {
                 <a href={result.downloadUrl} download={result.fileName}
                   className="btn-royal inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm text-white font-medium">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M7 2v8M4 8l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 12h10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+                    <path d="M7 2v8M4 8l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M2 12h10" stroke="white" strokeWidth="1.4" strokeLinecap="round" />
                   </svg>
                   Download
                 </a>
@@ -392,9 +437,8 @@ export default function ReceivePanel() {
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className={`h-0.5 flex-1 rounded-full transition-all duration-150 ${
-                  i < code.length ? "bg-[#1a56db]" : "bg-white/10"
-                }`}
+                className={`h-0.5 flex-1 rounded-full transition-all duration-150 ${i < code.length ? "bg-[#1a56db]" : "bg-white/10"
+                  }`}
               />
             ))}
           </div>
@@ -409,7 +453,7 @@ export default function ReceivePanel() {
             {state === "loading" ? (
               <>
                 <svg className="animate-spin-slow" width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <circle cx="6.5" cy="6.5" r="5" stroke="white" strokeWidth="1.5" strokeDasharray="8 8"/>
+                  <circle cx="6.5" cy="6.5" r="5" stroke="white" strokeWidth="1.5" strokeDasharray="8 8" />
                 </svg>
                 Fetching…
               </>
@@ -417,7 +461,7 @@ export default function ReceivePanel() {
               <>
                 Receive
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <path d="M6.5 2v7M3.5 7l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M6.5 2v7M3.5 7l3 3 3-3" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </>
             )}
@@ -428,8 +472,8 @@ export default function ReceivePanel() {
       {error && (
         <p className="text-red-400/80 text-sm flex items-center gap-2 animate-fade-in">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2"/>
-            <path d="M7 4v4M7 9.5v.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+            <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2" />
+            <path d="M7 4v4M7 9.5v.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
           {error}
         </p>
