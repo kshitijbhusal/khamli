@@ -40,7 +40,8 @@ export default function SendPanel() {
   const textRef = useRef<HTMLTextAreaElement>(null);
 
 
-  const [expireHour, setExpireHour] = useState<number | null>(null);
+  const [expireHour, setExpireHour] = useState<number | null>(0.5); // default to 30 minutes
+  
 
   // ── File handling ──────────────────────────────────────────────────────────
   const addFiles = (files: File[]) => {
@@ -130,6 +131,7 @@ export default function SendPanel() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             type: "files",
+            expireAtHour: expireHour,
             caption: hasText ? text.trim() : undefined,
             files: attachments.map((att) => ({
               fileName: att.file.name,
@@ -176,6 +178,7 @@ export default function SendPanel() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ type: "text", content: text.trim(), expireAtHour: expireHour }),
         });
+
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to send");
         setProgress(100);
@@ -406,10 +409,10 @@ export default function SendPanel() {
               className="mr-3 px-2 py-1 rounded-md bg-[var(--card-bg)] text-sm border border-[var(--border)] text-[var(--text-muted)] focus:outline-none"
             >
              
-              <option value="0.5">Expires in 30 min (default) </option>
-              <option value="2">Expires in 2 hours</option>
-              <option value="12">Expires in 12 hours</option>
-              <option value="24">Expires in 24 hours</option>
+              <option value={1} >Expires in 30 min (default) </option>
+              <option value={2}>Expires in 2 hours</option>
+              <option value={12}>Expires in 12 hours</option>
+              <option value={24}>Expires in 24 hours</option>
             </select>
 
           <button

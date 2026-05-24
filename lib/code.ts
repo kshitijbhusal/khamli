@@ -24,5 +24,6 @@ export async function generateUniqueCode(): Promise<string> {
  * Returns the expiry time 10 minutes from now.
  */
 export function getExpiryTime(hour: number): Date {
+  
   return new Date(Date.now() + hour * 60 * 60 * 1000);
 }

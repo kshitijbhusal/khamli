@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { type, expireAtHour } = body;
+    
 
     if (!type) {
       return NextResponse.json({ error: "Missing type" }, { status: 400 });
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     // ── Text message ──────────────────────────────────────────────────────────
     if (type === "text") {
-      const { content } = body;
+      const { content , expireAtHour } = body;
       if (!content || typeof content !== "string" || content.trim().length === 0) {
         return NextResponse.json({ error: "Empty message" }, { status: 400 });
       }
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
       const code = await generateUniqueCode();
       const expiresAt = getExpiryTime(expireAtHour);
 
-      console.log("Expires at:", expiresAt);
+   
 
       await prisma.message.create({
         data: { code, type, content: content.trim(), expiresAt },
@@ -44,9 +45,10 @@ export async function POST(req: NextRequest) {
     // ── Multi-file batch ──────────────────────────────────────────────────────
     // Accepts: { type: "files", files: [{ fileName, fileMime, fileSize }], caption? }
     if (type === "files") {
-      const { files, caption } = body as {
+      const { files, caption, expireAtHour } = body as {
         files: { fileName: string; fileMime: string; fileSize: number }[];
         caption?: string;
+        expireAtHour: number;
       };
 
       if (!Array.isArray(files) || files.length === 0) {
@@ -124,7 +126,7 @@ export async function POST(req: NextRequest) {
 
     // ── Legacy single-file / image / pdf ─────────────────────────────────────
     if (type === "file" || type === "image" || type === "pdf") {
-      const { fileName, fileMime, fileSize } = body;
+      const { fileName, fileMime, fileSize, expireAtHour } = body;
       if (!fileName || !fileMime || !fileSize) {
         return NextResponse.json({ error: "Missing file metadata" }, { status: 400 });
       }
