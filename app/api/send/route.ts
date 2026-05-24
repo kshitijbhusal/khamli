@@ -13,7 +13,7 @@ const MAX_FILES = 10;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { type } = body;
+    const { type, expireAtHour } = body;
 
     if (!type) {
       return NextResponse.json({ error: "Missing type" }, { status: 400 });
@@ -30,7 +30,9 @@ export async function POST(req: NextRequest) {
       }
 
       const code = await generateUniqueCode();
-      const expiresAt = getExpiryTime();
+      const expiresAt = getExpiryTime(expireAtHour);
+
+      console.log("Expires at:", expiresAt);
 
       await prisma.message.create({
         data: { code, type, content: content.trim(), expiresAt },
@@ -71,7 +73,7 @@ export async function POST(req: NextRequest) {
       }
 
       const code = await generateUniqueCode();
-      const expiresAt = getExpiryTime();
+      const expiresAt = getExpiryTime(expireAtHour);
 
       // All files share one folder in S3: uploads/{folderUUID}/
       const folderUUID = uuidv4();
@@ -131,7 +133,7 @@ export async function POST(req: NextRequest) {
       }
 
       const code = await generateUniqueCode();
-      const expiresAt = getExpiryTime();
+      const expiresAt = getExpiryTime(expireAtHour);
       const fileKey = `uploads/${uuidv4()}/${fileName}`;
 
       await prisma.message.create({

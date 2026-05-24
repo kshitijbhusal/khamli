@@ -39,6 +39,9 @@ export default function SendPanel() {
   const fileRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
 
+
+  const [expireHour, setExpireHour] = useState<number | null>(null);
+
   // ── File handling ──────────────────────────────────────────────────────────
   const addFiles = (files: File[]) => {
     const remaining = MAX_ATTACHMENTS - attachments.length;
@@ -171,7 +174,7 @@ export default function SendPanel() {
         const res = await fetch("/api/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ type: "text", content: text.trim() }),
+          body: JSON.stringify({ type: "text", content: text.trim(), expireAtHour: expireHour }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to send");
@@ -230,9 +233,9 @@ export default function SendPanel() {
             {attachments.length > 1
               ? `All ${attachments.length} files accessible with this code · `
               : ""}
-            Expires in ~10 minutes
+            This code will expire at
             {expiresAt && (
-              <> · {expiresAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</>
+              <> {expiresAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</>
             )}
           </p>
 
@@ -342,24 +345,28 @@ export default function SendPanel() {
         )}
 
         {/* Text area */}
-        <textarea
-          ref={textRef}
-          value={text}
-          spellCheck={false}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handleSend();
-          }}
-          placeholder={
-            attachments.length > 0
-              ? "Add a caption (optional)…"
-              : "Type a message, paste a link, or attach a file…"
-          }
-          disabled={isBusy}
-          rows={4}
-          className="w-full bg-transparent text-md placeholder-slate-300/60 resize-none px-4 py-4 focus:outline-none leading-relaxed disabled:opacity-50"
-          style={{ color: "var(--text-primary)" }}
-        />
+
+        
+
+          
+          <textarea
+            ref={textRef}
+            value={text}
+            spellCheck={false}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handleSend();
+            }}
+            placeholder={
+              attachments.length > 0
+                ? "Add a caption (optional)…"
+                : "Type a message, paste a link, or attach a file…"
+            }
+            disabled={isBusy}
+            rows={4}
+            className="w-full bg-transparent text-md placeholder-slate-300/60 resize-none px-4 py-4 focus:outline-none leading-relaxed disabled:opacity-50"
+            style={{ color: "var(--text-primary)" }}
+          />
 
         {/* Toolbar */}
         <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: "1px solid var(--border)" }}>
@@ -390,6 +397,21 @@ export default function SendPanel() {
           </div>
 
           {/* Send button */}
+             {/* add a dropdown to select expiry time before sending, default to 10 minutes, options: 30 min, 2 hour, 12 hours, 24 hours */}
+            <select
+              value={expireHour ?? ""}
+              onChange={(e) => setExpireHour(e.target.value ? parseInt(e.target.value) : null)}
+              disabled={isBusy}
+              style={{ color: "var(--text-muted)", border: "1px solid var(--border)" }}
+              className="mr-3 px-2 py-1 rounded-md bg-[var(--card-bg)] text-sm border border-[var(--border)] text-[var(--text-muted)] focus:outline-none"
+            >
+             
+              <option value="0.5">Expires in 30 min (default) </option>
+              <option value="2">Expires in 2 hours</option>
+              <option value="12">Expires in 12 hours</option>
+              <option value="24">Expires in 24 hours</option>
+            </select>
+
           <button
             onClick={handleSend}
             disabled={isBusy || (!text.trim() && attachments.length === 0)}
@@ -446,7 +468,7 @@ export default function SendPanel() {
       />
 
       <p className="text-[var(--text-faint)] text-xs text-center">
-        Up to {MAX_ATTACHMENTS} files · 50 MB each · Self-destructs in 10 minutes
+        Up to {MAX_ATTACHMENTS} files · 500 MB each · Self-destructs After Expiry
       </p>
     </div>
   );
